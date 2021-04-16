@@ -24,23 +24,25 @@ class SinglyLinkedList<T> {
     }
   }
 
-  public append(value: T, next: ListNode<T> | null = null): void {
-    if (value === null || value === undefined) return;
-    this._length++;
+  public append(...values: T[]): void {
+    for (let value of values) {
+      if (value === null || value === undefined) continue;
+      this._length++;
 
-    const node = new ListNode<T>(value, next);
+      const node = new ListNode<T>(value);
 
-    if (!this.head) {
-      this.head = node;
-      this.tail = this.head;
-      return;
+      if (!this.head) {
+        this.head = node;
+        this.tail = this.head;
+        continue;
+      }
+
+      if (this.tail) {
+        this.tail.next = node;
+      }
+
+      this.tail = node;
     }
-
-    if (this.tail) {
-      this.tail.next = node;
-    }
-
-    this.tail = node;
   }
 
   public setFirst(value: T): void {
@@ -202,21 +204,33 @@ class SinglyLinkedList<T> {
   public concat(
     concatedSinglyLinkedList: SinglyLinkedList<T>
   ): SinglyLinkedList<T> {
-    const singlyLinkedList = this.clone();
+    const firstSinglyLinkedList = this.clone();
+    const secondSinglyLinkedList = concatedSinglyLinkedList.clone();
 
-    if (singlyLinkedList.tail) {
-      singlyLinkedList.tail.next = concatedSinglyLinkedList.head;
+    if (!firstSinglyLinkedList.tail) {
+      return secondSinglyLinkedList;
     }
 
-    return singlyLinkedList;
+    if (secondSinglyLinkedList.tail) {
+      firstSinglyLinkedList.tail.next = secondSinglyLinkedList.head;
+      firstSinglyLinkedList.tail = secondSinglyLinkedList.tail;
+      firstSinglyLinkedList._length += secondSinglyLinkedList._length;
+    }
+
+    return firstSinglyLinkedList;
   }
 
   public clone(): SinglyLinkedList<T> {
-    if (this.head) {
-      return { ...this };
+    const singlyLinkedList = new SinglyLinkedList<T>();
+
+    let currentNode = this.head;
+
+    while (currentNode) {
+      singlyLinkedList.append(currentNode.value);
+      currentNode = currentNode.next;
     }
 
-    return new SinglyLinkedList<T>();
+    return singlyLinkedList;
   }
 
   public static from<R>(...args: R[]): SinglyLinkedList<R> {
