@@ -201,6 +201,25 @@ class SinglyLinkedList<T> {
     return singlyLinkedList;
   }
 
+  public reverse(): void {
+    if (!this.head) return;
+
+    let previousNode: ListNode<T> | null = null;
+    let currentNode = this.head;
+    let nextNode = this.head.next;
+    this.tail = this.head;
+
+    while (currentNode.next) {
+      currentNode.next = previousNode;
+      previousNode = currentNode;
+      currentNode = nextNode!;
+      nextNode = currentNode.next;
+    }
+
+    currentNode.next = previousNode;
+    this.head = currentNode;
+  }
+
   public concat(
     concatedSinglyLinkedList: SinglyLinkedList<T>
   ): SinglyLinkedList<T> {
