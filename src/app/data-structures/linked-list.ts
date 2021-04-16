@@ -93,6 +93,11 @@ class SinglyLinkedList<T> {
     if (this.head.value === value) {
       this.head = this.head.next;
       this._length--;
+
+      if (!this.length) {
+        this.tail = null;
+      }
+
       return true;
     }
 
