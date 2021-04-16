@@ -133,6 +133,19 @@ class SinglyLinkedList<T> {
     return values;
   }
 
+  public toArray(): ListNode<T>[] {
+    const nodes: ListNode<T>[] = [];
+
+    let currentNode = this.head;
+
+    while (currentNode) {
+      nodes.push(currentNode);
+      currentNode = currentNode.next;
+    }
+
+    return nodes;
+  }
+
   public includes(value: T): boolean {
     return !!this.find(value);
   }
@@ -184,6 +197,26 @@ class SinglyLinkedList<T> {
     }
 
     return singlyLinkedList;
+  }
+
+  public concat(
+    concatedSinglyLinkedList: SinglyLinkedList<T>
+  ): SinglyLinkedList<T> {
+    const singlyLinkedList = this.clone();
+
+    if (singlyLinkedList.tail) {
+      singlyLinkedList.tail.next = concatedSinglyLinkedList.head;
+    }
+
+    return singlyLinkedList;
+  }
+
+  public clone(): SinglyLinkedList<T> {
+    if (this.head) {
+      return { ...this };
+    }
+
+    return new SinglyLinkedList<T>();
   }
 
   public static from<R>(...args: R[]): SinglyLinkedList<R> {
