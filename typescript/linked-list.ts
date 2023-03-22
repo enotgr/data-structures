@@ -67,7 +67,7 @@ class SinglyLinkedList<T> {
       return;
     }
 
-    const node = new ListNode(value, afterNode.next);
+    const node = new ListNode<T>(value, afterNode.next);
     afterNode.next = node;
 
     this._length++;
@@ -263,4 +263,62 @@ class SinglyLinkedList<T> {
   }
 }
 
-const list = new SinglyLinkedList<string>();
+// создание пустого списка и добавление элементов
+const list = new SinglyLinkedList<number>();
+list.append(1, 2, 3);
+console.log(list.length); // 3
+console.log(list.values()); // [1, 2, 3]
+
+// добавление элемента в начало списка
+list.setFirst(0);
+console.log(list.length); // 4
+console.log(list.values()); // [0, 1, 2, 3]
+
+// добавление элемента после заданного элемента
+list.appendAfter(1, 1.5);
+console.log(list.length); // 5
+console.log(list.values()); // [0, 1, 1.5, 2, 3]
+
+// поиск элемента в списке
+const node = list.find(2);
+console.log(node); // { value: 2, next: { value: 3, next: null } }
+
+// удаление элемента из списка
+list.remove(1.5);
+console.log(list.length); // 4
+console.log(list.values()); // [0, 1, 2, 3]
+
+// создание списка из массива
+const list2 = SinglyLinkedList.from(4, 5, 6);
+console.log(list2.values()); // [4, 5, 6]
+
+// объединение двух списков
+const list3 = list.concat(list2);
+console.log(list3.values()); // [0, 1, 2, 3, 4, 5, 6]
+
+// изменение списка с помощью map
+const list4 = list3.map((value) => value * 2);
+console.log(list4.values()); // [0, 2, 4, 6, 8, 10, 12]
+
+// фильтрация списка с помощью filter
+const list5 = list4.filter((value) => value > 5);
+console.log(list5.values()); // [6, 8, 10, 12]
+
+// обращение списка с помощью reverse
+list5.reverse();
+console.log(list5.values()); // [12, 10, 8, 6]
+
+// получение массива узлов списка
+const nodes = list5.toArray();
+console.log(nodes); // [{ value: 12, next: {...} }, { value: 10, next: {...} }, { value: 8, next: {...} }, { value: 6, next: null }]
+
+// проверка наличия элемента в списке
+console.log(list5.includes(8)); // true
+console.log(list5.includes(5)); // false
+
+// перебор элементов списка с помощью forEach
+list5.forEach((node, index) => console.log(`node ${index}: ${node.value}`));
+// node 0: 12
+// node 1: 10
+// node 2: 8
+// node 3: 6
